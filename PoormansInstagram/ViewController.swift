@@ -17,6 +17,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var btnFilterImage: UIButton!
 
     var filterType : String = "CIPhotoEffectNoir"
+
+    var filterImage : CIImage!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +39,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         if let pickedImage = image as? UIImage {
             imageView.contentMode = .ScaleAspectFit
+            filterImage = CIImage(image: pickedImage)
             imageView.image = pickedImage
         }
         dismissViewControllerAnimated(true, completion: nil)
@@ -63,13 +67,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func setProcessFilter() {
-        var originalImage = CIImage(image: imageView.image!)
-        if originalImage !== nil {
-            var filter = CIFilter(name: "CIPhotoEffectProcess")
+        //var originalImage = CIImage(image: imageView.image!)
+        if filterImage !== nil {
+            let filter = CIFilter(name: "CIPhotoEffectProcess")
             filter?.setDefaults()
-            filter?.setValue(originalImage, forKey: kCIInputImageKey)
-            var imageOutput = filter!.outputImage
-            var newImage = UIImage(CIImage: imageOutput!)
+            filter?.setValue(filterImage, forKey: kCIInputImageKey)
+            let imageOutput = filter!.outputImage
+            let newImage = UIImage(CIImage: imageOutput!)
             imageView.image = newImage
         } else {
             print("problem!")
@@ -77,13 +81,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func setNoirFilter() {
-        var originalImage = CIImage(image: imageView.image!)
-        if originalImage !== nil {
-            var filter = CIFilter(name: "CIPhotoEffectNoir")
+        if filterImage !== nil {
+            let filter = CIFilter(name: "CIPhotoEffectNoir")
             filter?.setDefaults()
-            filter?.setValue(originalImage, forKey: kCIInputImageKey)
-            var imageOutput = filter!.outputImage
-            var newImage = UIImage(CIImage: imageOutput!)
+            filter?.setValue(filterImage, forKey: kCIInputImageKey)
+            let imageOutput = filter!.outputImage
+            let newImage = UIImage(CIImage: imageOutput!)
             imageView.image = newImage
         } else {
             print("problem!")
@@ -92,13 +95,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func caseChromeFilter() {
-        var originalImage = CIImage(image: imageView.image!)
-        if originalImage !== nil {
-            var filter = CIFilter(name: "CIPhotoEffectChrome")
+        if filterImage !== nil {
+            let filter = CIFilter(name: "CIPhotoEffectChrome")
             filter?.setDefaults()
-            filter?.setValue(originalImage, forKey: kCIInputImageKey)
-            var imageOutput = filter!.outputImage
-            var newImage = UIImage(CIImage: imageOutput!)
+            filter?.setValue(filterImage, forKey: kCIInputImageKey)
+            let imageOutput = filter!.outputImage
+            let newImage = UIImage(CIImage: imageOutput!)
             imageView.image = newImage
         } else {
             print("problem!")
